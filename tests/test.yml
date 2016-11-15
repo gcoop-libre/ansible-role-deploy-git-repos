@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - role: gcoop-libre.deploy-git-repos
+      deploy_git_repos:
+        - name: Test
+          repo: https://github.com/gcoop-libre/ansible-role-deploy-git-repos.git
+          dest: ~/test
+          excludes:
+            - .git*

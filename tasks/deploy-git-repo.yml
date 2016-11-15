@@ -1,0 +1,52 @@
+---
+- name: "Repo {{ git_repo.name }}: Generate random temp directory"
+  command: mktemp -d "{{ deploy_git_repos_temp_directory_mask }}"
+  become: no
+  delegate_to: localhost
+  changed_when: false
+  register: git_repo_temp_dir
+
+- name: "Repo {{ git_repo.name }}: Clone repository"
+  git:
+    repo: "{{ git_repo.repo }}"
+    dest: "{{ git_repo_temp_dir.stdout }}"
+    version: "{{ git_repo.version | default('master') }}"
+  become: no
+  delegate_to: localhost
+  changed_when: false
+
+- name: "Repo {{ git_repo.name }}: Ensure {{ git_repo.dest }} exists"
+  file:
+    path: "{{ git_repo.dest }}"
+    state: directory
+  become: "{{ deploy_git_repos_become_rsync }}"
+
+- name: "Repo {{ git_repo.name }}: Generate empty rsync_opts"
+  set_fact:
+    git_repo_rsync_opts: []
+
+- name: "Repo {{ git_repo.name }}: Generate rsync_opts"
+  set_fact:
+    git_repo_rsync_opts: "{{ git_repo_rsync_opts }} + ['--exclude {{ item }}']"
+  with_items: "{{ git_repo.excludes }}"
+  when: git_repo.excludes | default([]) | length > 0
+
+- name: "Repo {{ git_repo.name }}: Synchronize to target host"
+  synchronize:
+    src: "{{ git_repo_temp_dir.stdout }}/"
+    dest: "{{ git_repo.dest }}"
+    mode: push
+    archive: yes
+    delete: "{{ git_repo.clean | default(false) }}"
+    rsync_opts: "{{ git_repo_rsync_opts | default([]) }}"
+  become: "{{ deploy_git_repos_become_rsync }}"
+
+- name: "Repo {{ git_repo.name }}: Set custom permissions"
+  file:
+    path: "{{ git_repo.dest }}/{{ item.path }}"
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+    recurse: "{{ item.recurse | default(omit) }}"
+  with_items: "{{ git_repo.perms | default([]) }}"
+  when: git_repo.perms | default([]) | length > 0

@@ -1,0 +1,19 @@
+---
+deploy_git_repos_temp_directory_mask: /tmp/deploy_git_repos.XXXXXXXXXX
+deploy_git_repos_become_rsync: no
+
+deploy_git_repos: []
+  # Available properties
+  # - name: Test
+  #   repo: git@github.com:gcoop-libre/ansible-role-deploy-git-repos.git
+  #   version: master (default)
+  #   dest: /var/www
+  #   excludes:
+  #     - .git*
+  #   clean: false (default)
+  #   perms:
+  #     - path: cache
+  #       owner: www-data
+  #       group: www-data
+  #       mode: '0775'
+  #       recurse: false

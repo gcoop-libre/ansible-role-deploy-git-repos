@@ -1,0 +1,6 @@
+---
+- include: tasks/deploy-git-repo.yml
+  with_items: "{{ deploy_git_repos }}"
+  loop_control:
+    loop_var: git_repo
+  when: deploy_git_repos | length > 0
