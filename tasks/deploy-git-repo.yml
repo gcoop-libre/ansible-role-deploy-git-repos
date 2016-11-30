@@ -6,6 +6,14 @@
   changed_when: false
   register: git_repo_temp_dir
 
+- name: "Repo {{ git_repo.name }}: Adjust random temp directory permissions"
+  file:
+    path: "{{ git_repo_temp_dir.stdout }}"
+    mode: '0755'
+  become: no
+  delegate_to: localhost
+  changed_when: false
+
 - name: "Repo {{ git_repo.name }}: Clone repository"
   git:
     repo: "{{ git_repo.repo }}"
