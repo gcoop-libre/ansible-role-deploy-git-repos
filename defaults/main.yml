@@ -8,6 +8,7 @@ deploy_git_repos: []
   #   repo: git@github.com:gcoop-libre/ansible-role-deploy-git-repos.git
   #   version: master (default)
   #   dest: /var/www
+  #   subtree: app
   #   excludes:
   #     - .git*
   #   clean: false (default)

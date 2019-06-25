@@ -41,7 +41,7 @@
 
 - name: "Repo {{ git_repo.name }}: Synchronize to target host"
   synchronize:
-    src: "{{ git_repo_temp_dir.stdout }}/"
+    src: "{{ git_repo_temp_dir.stdout }}/{{ git_repo.subtree | default('') }}{{ (git_repo.subtree is defined) | ternary('/', '') }}"
     dest: "{{ git_repo.dest }}"
     mode: push
     archive: yes
