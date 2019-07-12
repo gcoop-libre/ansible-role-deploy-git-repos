@@ -33,6 +33,7 @@ When this property is set to `yes`, the synchronize task will use `sudo rsync` a
         subtree: app
         excludes:
           - .git*
+        key_file: ~/.ssh/gitlab_camba
         clean: false
         perms:
           - path: cache
@@ -43,7 +44,7 @@ When this property is set to `yes`, the synchronize task will use `sudo rsync` a
 
 List of repositories to deploy on the target host. `name`, `repo` and `dest` are mandatory. `exclude` can be a list of files or patterns to exclude when uploading the cloned repository to the target host.
 
-Enabling `clean` will delete all the files on `dest` which are not on the repository. `perms` is a list of files or directories, which owners and permissions should be modified. `subtree` is used to deploy only a subtree of the cloned repository (optional).
+Enabling `clean` will delete all the files on `dest` which are not on the repository. `perms` is a list of files or directories, which owners and permissions should be modified. `subtree` is used to deploy only a subtree of the cloned repository (optional). `key_file` can be used to specify the ssh key to use.
 
 Dependencies
 ------------

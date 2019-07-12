@@ -19,6 +19,7 @@
     repo: "{{ git_repo.repo }}"
     dest: "{{ git_repo_temp_dir.stdout }}"
     version: "{{ git_repo.version | default('master') }}"
+    key_file: "{{ git_repo.key_file | default(omit) }}"
   become: no
   delegate_to: localhost
   changed_when: false

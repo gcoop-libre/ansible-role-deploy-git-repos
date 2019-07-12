@@ -12,6 +12,7 @@ deploy_git_repos: []
   #   excludes:
   #     - .git*
   #   clean: false (default)
+  #   key_file: "~/.ssh/id_rsa"
   #   perms:
   #     - path: cache
   #       owner: www-data
